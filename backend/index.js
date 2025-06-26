@@ -8,6 +8,8 @@ const propertyRoutes = require('./routes/property');
 const verifyRoutes = require('./routes/verify');
 const adminRoutes = require('./routes/admin');
 const logRoutes = require('./routes/adminLogs');  // logs separated
+const userRoutes = require('./routes/users');
+
 
 const app = express();
 
@@ -22,6 +24,7 @@ app.use('/api/verify', verifyRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin-logs', logRoutes);  // distinct path for logs
 app.use('/uploads', express.static('uploads'));
+app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
   res.send('Urban Home Backend Running!');

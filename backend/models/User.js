@@ -22,6 +22,15 @@ const userSchema = new mongoose.Schema({
     default: 'active'
   },
 
+  verificationDocument: { 
+    type: String 
+  },
+  verificationStatus: { 
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending'
+  },
+
   emailToken: String,             // For email verification
   emailVerified: { type: Boolean, default: false },
 

@@ -1,9 +1,9 @@
-//verify.js
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/upload');
 const auth = require('../middleware/auth');
 const logActivity = require('../utils/logActivity');
+const User = require('../models/User');
 
 // Upload single document for verification
 router.post('/upload', auth, upload.single('document'), async (req, res) => {
@@ -12,13 +12,26 @@ router.post('/upload', auth, upload.single('document'), async (req, res) => {
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
+    const documentPath = req.file.path;
+
+    // Save to user record
+    const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { 
+        verificationDocument: documentPath,
+        verificationStatus: 'pending' 
+    },
+    { new: true }
+    );
+
+
     // Log activity
     await logActivity(req.user.id, 'UPLOAD_DOCUMENT', `Uploaded document ${req.file.originalname}`);
 
-    // Respond with success
     res.status(200).json({
-      message: 'Document uploaded successfully',
-      path: req.file.path
+      message: 'Document uploaded and saved successfully',
+      path: documentPath,
+      user
     });
 
   } catch (err) {
