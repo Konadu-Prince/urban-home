@@ -1,49 +1,44 @@
+// src/pages/Login.js
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [message, setMessage] = useState('');
 
-  const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(form)
       });
-
       const data = await res.json();
 
-      if (res.ok) {
-        toast.success('Login successful');
+      if (data.token) {
         localStorage.setItem('token', data.token);
-        navigate('/user-dashboard'); // You can change this path
+        setMessage('Login successful');
+        window.location.href = '/'; // Redirect after login
       } else {
-        toast.error(data.message || 'Login failed');
+        setMessage(data.message || 'Login failed');
       }
     } catch (err) {
-      toast.error('Server error');
+      console.error(err);
+      setMessage('Login error.');
     }
   };
 
   return (
-    <div className="form-container">
+    <div className="auth-form">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
         <button type="submit">Login</button>
       </form>
-      <p>Don’t have an account? <a href="/register">Register</a></p>
-
+      <p>{message}</p>
     </div>
   );
 }

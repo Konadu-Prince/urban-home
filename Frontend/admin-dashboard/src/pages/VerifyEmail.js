@@ -1,33 +1,22 @@
-import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+// src/pages/VerifyEmail.js
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function VerifyEmail() {
   const { token } = useParams();
-  const navigate = useNavigate();
+  const [message, setMessage] = useState('Verifying...');
 
   useEffect(() => {
-    const verify = async () => {
-      try {
-        const res = await fetch(`/api/auth/verify-email/${token}`);
-        const data = await res.json();
-        if (res.ok) {
-          toast.success(data.message || 'Email verified!');
-          navigate('/login');
-        } else {
-          toast.error(data.message || 'Invalid or expired token');
-        }
-      } catch (err) {
-        toast.error('Server error during verification');
-      }
-    };
-
-    verify();
-  }, [token, navigate]);
+    fetch(`/api/auth/verify-email/${token}`)
+      .then(res => res.json())
+      .then(data => setMessage(data.message || 'Verification failed'))
+      .catch(() => setMessage('Error verifying email'));
+  }, [token]);
 
   return (
-    <div className="form-container">
-      <h2>Verifying your email...</h2>
+    <div className="auth-form">
+      <h2>Email Verification</h2>
+      <p>{message}</p>
     </div>
   );
 }

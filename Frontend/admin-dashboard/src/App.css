@@ -1,4 +1,4 @@
-
+/* Optional App styles (from CRA default) */
 .App {
   text-align: center;
 }
@@ -37,4 +37,3 @@
     transform: rotate(360deg);
   }
 }
-

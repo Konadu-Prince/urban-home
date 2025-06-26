@@ -8,7 +8,7 @@ const UserDashboard = () => {
   return (
     <div className="user-dashboard">
       <h2>Welcome, User!</h2>
-      <button onClick={() => navigate('/upload-document')}>Upload ID Document</button>
+      <button onClick={() => navigate('/user/upload-document')}>Upload ID Document</button>
     </div>
   );
 };

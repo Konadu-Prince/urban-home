@@ -1,60 +1,51 @@
 // src/pages/Register.js
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 
 function Register() {
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     fullName: '',
     email: '',
     password: '',
     userType: 'renter',
     nationalID: ''
   });
+  const [message, setMessage] = useState('');
 
-  const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(form)
       });
-
       const data = await res.json();
-
-      if (res.ok) {
-        toast.success('Registration successful! Check your email to verify.');
-      } else {
-        toast.error(data.message || 'Registration failed');
-      }
-
+      setMessage(data.message || 'Registered!');
     } catch (err) {
-      toast.error('Server error');
+      console.error(err);
+      setMessage('Error during registration.');
     }
   };
 
   return (
-    <div className="form-container">
+    <div className="auth-form">
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <input name="fullName" placeholder="Full Name" onChange={handleChange} required />
-        <input name="email" placeholder="Email" type="email" onChange={handleChange} required />
-        <input name="password" placeholder="Password" type="password" onChange={handleChange} required />
-        <input name="nationalID" placeholder="National ID" onChange={handleChange} required />
+        <input type="text" name="fullName" placeholder="Full Name" onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+        <input type="text" name="nationalID" placeholder="National ID" onChange={handleChange} required />
         <select name="userType" onChange={handleChange}>
           <option value="renter">Renter</option>
-          <option value="buyer">Buyer</option>
           <option value="owner">Owner</option>
+          <option value="buyer">Buyer</option>
         </select>
         <button type="submit">Register</button>
       </form>
-      <p>Already have an account? <a href="/login">Login</a></p>
-
+      
+      <p>{message}</p>
     </div>
   );
 }
