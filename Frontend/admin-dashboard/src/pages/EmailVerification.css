@@ -1,0 +1,22 @@
+.verify-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.verify-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.success-msg {
+  color: green;
+}
+
+.error-msg {
+  color: red;
+}

@@ -1,42 +1,54 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import './ResetPassword.css';
 
-function ResetPassword() {
+const ResetPassword = () => {
   const { token } = useParams();
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleReset = async (e) => {
     e.preventDefault();
+    setMessage('');
+    setError('');
+
     try {
-      const res = await fetch(`/api/auth/reset-password/${token}`, {
+      const res = await fetch(`http://localhost:5000/api/auth/reset-password/${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
       });
+
       const data = await res.json();
 
       if (res.ok) {
-        toast.success('Password reset successfully!');
-        navigate('/login');
+        setMessage(data.message || 'Password has been reset.');
       } else {
-        toast.error(data.message || 'Reset failed');
+        setError(data.message || 'Invalid or expired token.');
       }
     } catch (err) {
-      toast.error('Server error');
+      setError('Something went wrong. Please try again.');
     }
   };
 
   return (
-    <div className="form-container">
-      <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="password" placeholder="New Password" required onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Reset</button>
+    <div className="reset-container">
+      <h2>Reset Your Password</h2>
+      <form onSubmit={handleReset}>
+        <input
+          type="password"
+          placeholder="Enter new password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Reset Password</button>
       </form>
+      {message && <p className="success-msg">{message}</p>}
+      {error && <p className="error-msg">{error}</p>}
     </div>
   );
-}
+};
 
 export default ResetPassword;

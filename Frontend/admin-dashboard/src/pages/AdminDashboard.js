@@ -14,6 +14,7 @@ const AdminDashboard = () => {
       <h1>Urban Home Admin Dashboard</h1>
       <BlockedUsersTable token={token} />
       <VerifyUserActions token={token} />
+      <a href="/properties">View Properties</a>
     </div>
   );
 };
