@@ -20,7 +20,7 @@ function Login() {
       if (data.token) {
         localStorage.setItem('token', data.token);
         setMessage('Login successful');
-        window.location.href = '/'; // Redirect after login
+        window.location.href = '/dashboard'; // Redirect after login
       } else {
         setMessage(data.message || 'Login failed');
       }

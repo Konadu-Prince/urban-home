@@ -29,7 +29,7 @@ const LoginPage = () => {
       } else {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        navigate('/'); // Redirect to dashboard or homepage
+        navigate('/dashboard'); // Redirect to dashboard or homepage
       }
     } catch (err) {
       setError('Server error during login');
@@ -44,11 +44,16 @@ const LoginPage = () => {
         <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
         <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
         <button type="submit">Login</button>
+        <p>Don't have an account? <a href="/register">Register here</a></p>
+
       </form>
+      
       <p className="small-link" onClick={() => navigate('/forgot-password')}>
         Forgot Password?
       </p>
+      
     </div>
+    
   );
 };
 

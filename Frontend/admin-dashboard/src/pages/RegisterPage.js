@@ -61,6 +61,8 @@ const RegisterPage = () => {
         </select>
         <input type="text" name="nationalID" placeholder="Ghana Card / License / Visa" required onChange={handleChange} />
         <button type="submit">Register</button>
+        <p>Already have an account? <a href="/login">Login here</a></p>
+
       </form>
     </div>
   );
