@@ -5,6 +5,7 @@
 /backend/logs/
 /backend/coverage/
 /backend/.DS_Store
+/backend/createAdmin.js
 
 # Frontend (React or similar)
 /frontend/node_modules/
