@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer');
 const { check, validationResult } = require('express-validator');
 const User = require('../models/User');
 
+
 const router = express.Router();
 
 // =====================
@@ -21,12 +22,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
-// in auth.js
-router.get('/me', auth, async (req, res) => {
-  const user = await User.findById(req.user.id).select('-password');
-  res.json({ user });
-});
 
 // =====================
 // Register User

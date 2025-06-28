@@ -4,6 +4,13 @@ const auth = require('../middleware/auth');
 const isAdmin = require('../middleware/isAdmin');
 const User = require('../models/User');
 
+
+// in auth.js
+router.get('/me', auth, async (req, res) => {
+  const user = await User.findById(req.user.id).select('-password');
+  res.json({ user });
+});
+
 // GET all users (for admin use)
 router.get('/all', auth, isAdmin, async (req, res) => {
   try {
